@@ -1,3 +1,7 @@
+Backend_URL= https://inventory-api-uis8.onrender.com
+
+Frontend_URL= https://jezminn.github.io/Frontend-inventory/
+
 # Deployment Instructions
 1. Save the files as index.html, styles.css, and script.js in the same folder.
 

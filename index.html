@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory Management System</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1><i class="fas fa-boxes"></i> Inventory Management System</h1>
+            <div class="api-status">
+                <span id="api-status-indicator" class="status-dot"></span>
+                <span id="api-status-text">Connecting to API...</span>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="navbar">
+            <button class="nav-btn active" data-section="dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</button>
+            <button class="nav-btn" data-section="products"><i class="fas fa-gift"></i> Products</button>
+            <button class="nav-btn" data-section="suppliers"><i class="fas fa-truck"></i> Suppliers</button>
+            <button class="nav-btn" data-section="orders"><i class="fas fa-clipboard-list"></i> Orders</button>
+            <button class="nav-btn" data-section="create"><i class="fas fa-plus-circle"></i> Create New</button>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Dashboard Section -->
+            <section id="dashboard" class="content-section active">
+                <h2><i class="fas fa-tachometer-alt"></i> Dashboard</h2>
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <h3>Total Products</h3>
+                        <p id="total-products" class="stat-number">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Total Suppliers</h3>
+                        <p id="total-suppliers" class="stat-number">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Total Orders</h3>
+                        <p id="total-orders" class="stat-number">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Pending Orders</h3>
+                        <p id="pending-orders" class="stat-number">0</p>
+                    </div>
+                </div>
+                <div class="recent-data">
+                    <div class="recent-section">
+                        <h3>Recent Products</h3>
+                        <div id="recent-products" class="data-list">Loading...</div>
+                    </div>
+                    <div class="recent-section">
+                        <h3>Recent Orders</h3>
+                        <div id="recent-orders" class="data-list">Loading...</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Products Section -->
+            <section id="products" class="content-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-gift"></i> Products</h2>
+                    <button class="refresh-btn" id="refresh-products"><i class="fas fa-sync-alt"></i> Refresh</button>
+                </div>
+                <div class="table-container">
+                    <table id="products-table">
+                        <thead>
+                            <tr>
+                                <th>SKU</th>
+                                <th>Name</th>
+                                <th>Price</th>
+                                <th>Stock</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="products-body">
+                            <tr><td colspan="5">Loading products...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Suppliers Section -->
+            <section id="suppliers" class="content-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-truck"></i> Suppliers</h2>
+                    <button class="refresh-btn" id="refresh-suppliers"><i class="fas fa-sync-alt"></i> Refresh</button>
+                </div>
+                <div class="table-container">
+                    <table id="suppliers-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Contact</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="suppliers-body">
+                            <tr><td colspan="3">Loading suppliers...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Orders Section -->
+            <section id="orders" class="content-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-clipboard-list"></i> Orders</h2>
+                    <button class="refresh-btn" id="refresh-orders"><i class="fas fa-sync-alt"></i> Refresh</button>
+                </div>
+                <div class="table-container">
+                    <table id="orders-table">
+                        <thead>
+                            <tr>
+                                <th>Supplier</th>
+                                <th>Items</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="orders-body">
+                            <tr><td colspan="4">Loading orders...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Create Section -->
+            <section id="create" class="content-section">
+                <h2><i class="fas fa-plus-circle"></i> Create New Record</h2>
+                <div class="form-selector">
+                    <button class="form-type-btn active" data-form="product">Product</button>
+                    <button class="form-type-btn" data-form="supplier">Supplier</button>
+                    <button class="form-type-btn" data-form="order">Order</button>
+                </div>
+                
+                <!-- Product Form -->
+                <form id="product-form" class="create-form active">
+                    <h3>Create New Product</h3>
+                    <div class="form-group">
+                        <label for="product-sku">SKU *</label>
+                        <input type="text" id="product-sku" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="product-name">Name *</label>
+                        <input type="text" id="product-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="product-price">Price *</label>
+                        <input type="number" id="product-price" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="product-stock">Stock *</label>
+                        <input type="number" id="product-stock" required>
+                    </div>
+                    <button type="submit" class="submit-btn">Create Product</button>
+                </form>
+                
+                <!-- Supplier Form -->
+                <form id="supplier-form" class="create-form">
+                    <h3>Create New Supplier</h3>
+                    <div class="form-group">
+                        <label for="supplier-name">Name *</label>
+                        <input type="text" id="supplier-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="supplier-contact">Contact *</label>
+                        <input type="text" id="supplier-contact" required>
+                    </div>
+                    <button type="submit" class="submit-btn">Create Supplier</button>
+                </form>
+                
+                <!-- Order Form -->
+                <form id="order-form" class="create-form">
+                    <h3>Create New Order</h3>
+                    <div class="form-group">
+                        <label for="order-supplier">Supplier *</label>
+                        <select id="order-supplier" required>
+                            <option value="">Select a supplier</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="order-status">Status</label>
+                        <select id="order-status">
+                            <option value="pending">Pending</option>
+                            <option value="shipped">Shipped</option>
+                            <option value="delivered">Delivered</option>
+                        </select>
+                    </div>
+                    <div id="order-items-container">
+                        <div class="order-item">
+                            <div class="form-group">
+                                <label>Product</label>
+                                <select class="order-product">
+                                    <option value="">Select a product</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Quantity</label>
+                                <input type="number" class="order-qty" value="1" min="1">
+                            </div>
+                            <button type="button" class="remove-item-btn"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+                    <button type="button" id="add-item-btn" class="secondary-btn"><i class="fas fa-plus"></i> Add Item</button>
+                    <button type="submit" class="submit-btn">Create Order</button>
+                </form>
+            </section>
+        </main>
+
+        <!-- Modal for Edit/Delete -->
+        <div id="modal" class="modal">
+            <div class="modal-content">
+                <span class="close-modal">&times;</span>
+                <div id="modal-body">
+                    <!-- Content will be loaded here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>Inventory Management System &copy; 2023 | Backend API: <span id="api-url">https://inventory-api.onrender.com</span></p>
+            
+    </div>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
+</body>
+</html>
